@@ -1,5 +1,6 @@
 {
   "expo": {
+    "entryPoint": "./src/unauthenticated/PhoneNumber.tsx",
     "name": "EasyRide",
     "slug": "EasyRide",
     "version": "1.0.0",
@@ -11,6 +12,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "scheme": "your-app-scheme",
     "ios": {
       "supportsTablet": true
     },
@@ -21,7 +23,8 @@
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
-    }
+      "bundler": "metro"
+    },
+    "plugins": ["expo-router", ["expo-font"]]
   }
 }
