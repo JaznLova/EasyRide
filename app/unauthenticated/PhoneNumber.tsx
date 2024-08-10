@@ -8,8 +8,14 @@ import {
 } from "react-native-responsive-screen";
 import { router } from "expo-router";
 import Feather from "@expo/vector-icons/Feather";
+import { useSessionStore } from "../../store/store";
+import { Controller, useForm } from "react-hook-form";
+import { ZPhone } from "../../src/store/zod";
+import { Phone } from "../../src/store/types";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const PhoneNumber = () => {
+  const { phoneNumber, setPhoneNumber } = useSessionStore();
   const [focus, setFocus] = useState(false);
   const [fontsLoaded] = useFonts({
     "Poppins-Bold": require("../../assets/fonts/Poppins-Black.ttf"),
@@ -17,7 +23,20 @@ const PhoneNumber = () => {
     "Poppins-SemiBold": require("../../assets/fonts/Poppins-SemiBold.ttf"),
     "Poppins-Regular": require("../../assets/fonts/Poppins-Regular.ttf"),
   });
-
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isLoading },
+  } = useForm<Phone>({
+    resolver: zodResolver(ZPhone),
+  });
+  const onSubmit = (data: any) => {
+    console.log(data);
+    router.push("/unauthenticated/OtpScreen");
+  };
+if (!fontsLoaded) {
+  return(<Text>Loser</Text>)
+}
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.upperContainer}>
@@ -30,22 +49,35 @@ const PhoneNumber = () => {
           { marginTop: focus ? hp("5%") : hp("10%") },
         ]}>
         <Feather name="phone" size={24} color="black" style={{ top: "2%" }} />
-        <TextInput
-          placeholder="Phone Number"
-          style={[styles.inputBox]}
-          onFocus={() => setFocus(true)}
-          onBlur={() => setFocus(false)}
+
+        <Controller
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <TextInput
+              placeholder="Phone Number"
+              keyboardType="number-pad"
+              onFocus={() => setFocus(true)}
+              onBlur={() => setFocus(false)}
+              onChangeText={onChange}
+              value={value || ""}
+              style={[styles.inputBox]}
+            />
+          )}
+          name="phoneNumber"
         />
       </View>
+      {errors.phoneNumber && (
+        <Text style={[styles.err, { marginTop: wp("3%") }]}>
+          {errors.phoneNumber!.message}
+        </Text>
+      )}
       <Pressable
         style={({ pressed }) => [
           pressed ? { opacity: 0.8 } : {},
           styles.buttonBlue,
         ]}
-        onPress={() => {
-          router.push("./OtpScreen");
-        }}>
-        <Text style={styles.buttonText}>Generate OTP</Text>
+        onPress={handleSubmit(onSubmit)}>
+        <Text style={styles.buttonText}>{isLoading?'is Loading...':'Generate OTP'}</Text>
       </Pressable>
     </SafeAreaView>
   );
@@ -109,5 +141,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "600",
     color: "#ffff",
+  },
+  err: {
+    color: "red",
   },
 });
