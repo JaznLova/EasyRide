@@ -5,7 +5,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 export default function Page() {
   // const session = useSessionStore((state) => state.session);
   return (
-<GestureHandlerRootView>
+<GestureHandlerRootView style={{ flex: 1 }}>
 <Redirect
       // href={'/unauthenticated/OtpScreen'}
       // href={'/unauthenticated/PhoneNumber'}

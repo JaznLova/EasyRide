@@ -6,3 +6,6 @@ export const ZName = z.object({
   firstName: z.string().min(3).max(12),
   lastName: z.string().min(3).max(12),
 })
+export const ZSession = z.object({
+  session: z.boolean().default(false)
+})
