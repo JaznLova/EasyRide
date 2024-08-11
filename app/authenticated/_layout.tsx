@@ -17,6 +17,7 @@ import { useFonts } from "expo-font";
 
 
 export default function Layout() {
+
   const [fontsLoaded] = useFonts({
     "Poppins-Bold": require("../../assets/fonts/Poppins-Black.ttf"),
     "Poppins-Medium": require("../../assets/fonts/Poppins-Medium.ttf"),
@@ -43,6 +44,7 @@ export default function Layout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Drawer
+      
         drawerContent={CustomDrawerContent}
         screenOptions={{
           drawerHideStatusBarOnOpen: true,
@@ -53,6 +55,7 @@ export default function Layout() {
         <Drawer.Screen
           name="Home" // This is the name of the page and must match the url from root
           options={{
+            // headerLeft
             headerStyle: {},
             drawerLabelStyle: {fontFamily: 'Poppins-SemiBold'},
             headerTitle: "",

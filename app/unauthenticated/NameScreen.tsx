@@ -8,6 +8,11 @@ import {
 import Feather from "@expo/vector-icons/Feather";
 import { useFonts } from "expo-font";
 import { router } from "expo-router";
+import { useSessionStore } from "../../store/store";
+import { Controller, useForm } from "react-hook-form";
+import { ZName } from "../../src/store/zod";
+import { Name } from "../../src/store/types";
+import { zodResolver } from "@hookform/resolvers/zod";
 const NameScreen = () => {
   const [fontsLoaded] = useFonts({
     "Poppins-Bold": require("../../assets/fonts/Poppins-Black.ttf"),
@@ -15,7 +20,22 @@ const NameScreen = () => {
     "Poppins-SemiBold": require("../../assets/fonts/Poppins-SemiBold.ttf"),
     "Poppins-Regular": require("../../assets/fonts/Poppins-Regular.ttf"),
   });
+  if (!fontsLoaded) {
+    return <Text>Loser</Text>;
+  }
   const [focus, setFocus] = useState(false);
+  const { firstName, setFirstName, lastName, setLastName } = useSessionStore();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isLoading },
+  } = useForm<Name>({
+    resolver: zodResolver(ZName),
+  });
+  const onSubmit = (data: any) => {
+    console.log(data);
+    router.replace("../authenticated/Home");
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.upperContainer}>
@@ -28,31 +48,71 @@ const NameScreen = () => {
           { marginTop: focus ? hp("0%") : hp("5%") },
         ]}>
         <Feather name="user" size={24} color="black" style={{ top: "2%" }} />
-        <TextInput
+        <Controller
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <TextInput
+              placeholder="First Name"
+              onFocus={() => setFocus(true)}
+              onBlur={() => setFocus(false)}
+              onChangeText={onChange}
+              value={value || ""}
+              style={[styles.inputBox]}
+            />
+          )}
+          name="firstName"
+        />
+        {/* <TextInput
           placeholder="First Name"
           style={[styles.inputBox]}
           onFocus={() => setFocus(true)}
           onBlur={() => setFocus(false)}
-        />
+        /> */}
       </View>
+      {errors.firstName && (
+        <Text style={[styles.err, { marginTop: wp("-8%") }]}>
+          {errors.firstName!.message}
+        </Text>
+      )}
       <View style={[styles.inputContainer]}>
         <Feather name="user" size={24} color="black" style={{ top: "2%" }} />
-        <TextInput
+
+        <Controller
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <TextInput
+              placeholder="First Name"
+              onFocus={() => setFocus(true)}
+              onBlur={() => setFocus(false)}
+              onChangeText={onChange}
+              value={value || ""}
+              style={[styles.inputBox]}
+            />
+          )}
+          name="lastName"
+        />
+
+        {/* <TextInput
           placeholder="Last Name"
           style={[styles.inputBox]}
           onFocus={() => setFocus(true)}
           onBlur={() => setFocus(false)}
-        />
+        /> */}
       </View>
+      {errors.lastName && (
+        <Text style={[styles.err, { marginTop: wp("-8%") }]}>
+          {errors.lastName!.message}
+        </Text>
+      )}
       <Pressable
         style={({ pressed }) => [
           pressed ? { opacity: 0.8 } : {},
           styles.buttonBlue,
         ]}
-        onPress={() => {
-          router.push("../authenticated/Home");
-        }}>
-        <Text style={styles.buttonText}>Generate OTP</Text>
+        onPress={handleSubmit(onSubmit)}>
+        <Text style={styles.buttonText}>
+          {isLoading ? "is Loading..." : "Sign Up"}
+        </Text>
       </Pressable>
     </SafeAreaView>
   );
@@ -113,5 +173,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "600",
     color: "#ffff",
+  },
+  err: {
+    color: "red",
   },
 });
