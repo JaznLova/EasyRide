@@ -9,3 +9,4 @@ export const ZName = z.object({
 export const ZSession = z.object({
   session: z.boolean().default(false)
 })
+// export const ZLocation = 

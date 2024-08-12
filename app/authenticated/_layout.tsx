@@ -47,6 +47,7 @@ export default function Layout() {
       
         drawerContent={CustomDrawerContent}
         screenOptions={{
+          // headerLeft: ({tintColor,pressColor,pressOpacity,labelVisible}) => <AntDesign name="home" size={24} color={'black'} />,
           drawerHideStatusBarOnOpen: true,
           drawerActiveTintColor: "#0164fe",
           drawerActiveBackgroundColor: "#f6f6f7",
@@ -100,6 +101,13 @@ export default function Layout() {
               <Ionicons name="settings-outline" size={size} color={color} />
             ),
           }}
+        />
+        <Drawer.Screen
+        name="Screens"
+        options={{
+          headerShown: false,
+          
+        }}
         />
       </Drawer>
     </GestureHandlerRootView>

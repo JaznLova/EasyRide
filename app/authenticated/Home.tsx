@@ -8,7 +8,8 @@ import {
 } from "react-native-responsive-screen";
 import { useFonts } from "expo-font";
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
-import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import { Link } from "expo-router";
 
 const Home = () => {
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -42,21 +43,30 @@ const Home = () => {
               color="#0164fe"
               style={{ marginRight: wp("3%"), marginTop: "3.5%" }}
             />
-            <View style={styles.locationInnerContainer}>
-              <Text style={styles.locationLabel}>Pick Up </Text>
-              <Text
-                numberOfLines={1}
-                style={styles.locationName}
-                ellipsizeMode="tail">
-                Gandhi Bazaar
-              </Text>
-            </View>
+            <Link href={"./Screens/PickUp"}>
+          
+              <View style={styles.locationInnerContainer}>
+                <Text style={styles.locationLabel}>Pick Up </Text>
+                <Text
+                  numberOfLines={1}
+                  style={styles.locationName}
+                  ellipsizeMode="tail">
+                  Gandhi Bazaar
+                </Text>
+              </View>
+            </Link>
           </View>
           <View style={styles.locationContainer}>
-          <FontAwesome6 name="location-dot"
+            <FontAwesome6
+              name="location-dot"
               size={hp("3%")}
               color="#0164fe"
-              style={{ marginRight: wp("3%"), marginTop: "3.5%",marginLeft:'1%' }} />
+              style={{
+                marginRight: wp("3%"),
+                marginTop: "3.5%",
+                marginLeft: "1%",
+              }}
+            />
             <View style={styles.locationInnerContainer}>
               <Text style={styles.locationLabel}>Drop-Off </Text>
               <Text
